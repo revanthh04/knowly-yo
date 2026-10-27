@@ -7,7 +7,11 @@ import {
   FolderPlus,
   FileText,
   Layers,
-  ArrowRight
+  ArrowRight,
+  MoreHorizontal,
+  Copy,
+  Trash2,
+  ExternalLink
 } from 'lucide-react';
 import { useAppStore } from '@/hooks/useAppStore';
 import { Card } from '@/components/ui/Card';
@@ -17,6 +21,19 @@ import { Modal } from '@/components/ui/Modal';
 import { Input, Textarea } from '@/components/ui/Input';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { toast } from '@/components/ui/Toast';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from '@/components/ui/accordion';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 
 export function KnowledgePage() {
   const navigate = useNavigate();
@@ -116,6 +133,38 @@ export function KnowledgePage() {
       })
     });
     navigate(`/notes/${newNote.id}`);
+  };
+
+  const handleDuplicateNote = (noteId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const original = store.getNote(noteId);
+    if (!original) return;
+    const duplicated = store.saveNote({
+      title: `${original.title} (Copy)`,
+      chapter_id: original.chapter_id,
+      subject_id: original.subject_id,
+      content_json: original.content_json,
+      content_text: original.content_text,
+      tags: original.tags,
+      is_published: false,
+      status: 'draft'
+    });
+    toast.success('Note Duplicated', `Created draft copy: ${duplicated.title}`);
+  };
+
+  const handleDeleteNote = (noteId: string, title: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (window.confirm(`Are you sure you want to delete "${title}"?`)) {
+      store.deleteNote(noteId);
+      toast.info('Note Deleted', `Removed "${title}"`);
+    }
+  };
+
+  const handleCopyNoteLink = (noteId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}/notes/${noteId}`;
+    navigator.clipboard.writeText(url);
+    toast.success('Link Copied', 'Note URL copied to clipboard');
   };
 
   const currentSubjectObj = subjects.find((s) => s.id === selectedSubjectId);
@@ -259,35 +308,53 @@ export function KnowledgePage() {
             )}
           </div>
 
-          <div className="bg-[#202020] rounded-[12px] border border-white/[0.08] p-2 space-y-1">
+          <div className="bg-[#202020] rounded-[12px] border border-white/[0.08] p-2">
             {chapters.length === 0 ? (
               <p className="text-xs text-white/40 p-4 text-center">No chapters found for this subject.</p>
             ) : (
-              chapters.map((chap) => {
-                const chapNotes = store.notes.filter((n) => n.chapter_id === chap.id);
-                return (
-                  <div
-                    key={chap.id}
-                    className="p-2.5 rounded-[6px] hover:bg-[#252525] transition-colors flex items-center justify-between group"
-                  >
-                    <div className="min-w-0 flex-1">
-                      <p className="text-xs font-medium text-white/85 truncate">
-                        {chap.title}
-                      </p>
-                      <span className="text-[10px] text-white/40">{chapNotes.length} notes</span>
-                    </div>
-                    {isTeacher && (
-                      <button
-                        onClick={() => handleCreateNewNote(chap.subject_id, chap.id)}
-                        className="opacity-0 group-hover:opacity-100 p-1 rounded text-white/40 hover:text-[#0075de] transition-opacity"
-                        title="Add note to chapter"
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                      </button>
-                    )}
-                  </div>
-                );
-              })
+              <Accordion type="multiple" className="space-y-1">
+                {chapters.map((chap) => {
+                  const chapNotes = store.notes.filter((n) => n.chapter_id === chap.id);
+                  return (
+                    <AccordionItem key={chap.id} value={chap.id} className="border-none">
+                      <div className="flex items-center justify-between group rounded-[6px] px-2 hover:bg-[#252525]">
+                        <AccordionTrigger className="flex-1 py-2 text-xs font-medium text-white/85 hover:text-white truncate">
+                          <span className="truncate">{chap.title}</span>
+                          <span className="text-[10px] text-white/40 ml-1.5 shrink-0">({chapNotes.length})</span>
+                        </AccordionTrigger>
+                        {isTeacher && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleCreateNewNote(chap.subject_id, chap.id);
+                            }}
+                            className="p-1 rounded text-white/40 hover:text-[#0075de] hover:bg-[#2e2e2e] transition-colors ml-1 cursor-pointer"
+                            title="Add note to chapter"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                      <AccordionContent className="pt-1 pb-2 pl-3 space-y-1">
+                        {chapNotes.length === 0 ? (
+                          <p className="text-[11px] text-white/35 italic pl-2">No notes yet</p>
+                        ) : (
+                          chapNotes.map((note) => (
+                            <div
+                              key={note.id}
+                              onClick={() => navigate(`/notes/${note.id}`)}
+                              className="flex items-center gap-2 p-1.5 rounded-[5px] text-xs text-white/60 hover:text-white hover:bg-[#282828] cursor-pointer transition-colors"
+                            >
+                              <FileText className="w-3 h-3 text-[#62aef0] shrink-0" />
+                              <span className="truncate">{note.title}</span>
+                            </div>
+                          ))
+                        )}
+                      </AccordionContent>
+                    </AccordionItem>
+                  );
+                })}
+              </Accordion>
             )}
           </div>
         </div>
@@ -322,7 +389,7 @@ export function KnowledgePage() {
                     className="flex flex-col justify-between"
                   >
                     <div>
-                      {/* Top Badges */}
+                      {/* Top Badges & Actions */}
                       <div className="flex items-center justify-between gap-2 mb-2">
                         <span className="text-[11px] font-medium text-[#62aef0] truncate">
                           {sub?.name || 'Technical'}
@@ -336,6 +403,49 @@ export function KnowledgePage() {
                           <Badge variant={note.status === 'ready' ? 'blue' : 'warning'} className="text-[10px]">
                             {note.status}
                           </Badge>
+
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <button
+                                onClick={(e) => e.stopPropagation()}
+                                className="p-1 rounded-[4px] text-white/40 hover:text-white hover:bg-[#2e2e2e] transition-colors cursor-pointer"
+                                aria-label="Note options"
+                              >
+                                <MoreHorizontal className="w-3.5 h-3.5" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-44">
+                              <DropdownMenuItem
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/notes/${note.id}`);
+                                }}
+                              >
+                                <ExternalLink className="w-3.5 h-3.5 text-white/40" />
+                                <span>Open Editor</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={(e) => handleCopyNoteLink(note.id, e)}>
+                                <Copy className="w-3.5 h-3.5 text-white/40" />
+                                <span>Copy Link</span>
+                              </DropdownMenuItem>
+                              {isTeacher && (
+                                <>
+                                  <DropdownMenuItem onClick={(e) => handleDuplicateNote(note.id, e)}>
+                                    <Copy className="w-3.5 h-3.5 text-white/40" />
+                                    <span>Duplicate</span>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem
+                                    onClick={(e) => handleDeleteNote(note.id, note.title, e)}
+                                    className="text-[#ff6b57] focus:text-[#ff6b57]"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                    <span>Delete</span>
+                                  </DropdownMenuItem>
+                                </>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
                       </div>
 

@@ -14,6 +14,8 @@ import { Modal } from '@/components/ui/Modal';
 import { Input, Textarea } from '@/components/ui/Input';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { toast } from '@/components/ui/Toast';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Lesson } from '@/types';
 
 export function TeachingPlannerPage() {
@@ -136,29 +138,29 @@ export function TeachingPlannerPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* View Toggle */}
-          <div className="flex items-center bg-[#202020] p-0.5 rounded-[8px] border border-white/[0.08]">
-            <button
-              onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-[6px] text-xs font-medium cursor-pointer ${
-                viewMode === 'list'
-                  ? 'bg-[#0075de] text-white'
-                  : 'text-white/50 hover:text-white'
-              }`}
-            >
-              <List className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={() => setViewMode('calendar')}
-              className={`p-1.5 rounded-[6px] text-xs font-medium cursor-pointer ${
-                viewMode === 'calendar'
-                  ? 'bg-[#0075de] text-white'
-                  : 'text-white/50 hover:text-white'
-              }`}
-            >
-              <CalendarDays className="w-3.5 h-3.5" />
-            </button>
-          </div>
+          {/* Radix View Toggle */}
+          <TooltipProvider delayDuration={200}>
+            <Tabs value={viewMode} onValueChange={(val) => setViewMode(val as 'calendar' | 'list')}>
+              <TabsList className="bg-[#202020] border border-white/[0.08] p-0.5 h-auto">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <TabsTrigger value="list" className="p-1.5 px-2 text-xs">
+                      <List className="w-3.5 h-3.5" />
+                    </TabsTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent>List view</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <TabsTrigger value="calendar" className="p-1.5 px-2 text-xs">
+                      <CalendarDays className="w-3.5 h-3.5" />
+                    </TabsTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent>Calendar view</TooltipContent>
+                </Tooltip>
+              </TabsList>
+            </Tabs>
+          </TooltipProvider>
 
           {isTeacher && (
             <Button

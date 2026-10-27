@@ -14,6 +14,7 @@ import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Textarea } from '@/components/ui/Input';
 import { toast } from '@/components/ui/Toast';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 type AIPromptType = 'structure_notes' | 'explain' | 'generate_examples' | 'quiz' | 'summarize' | 'mistakes';
 
@@ -280,22 +281,19 @@ What happens if null is passed to the core execution method?
                   <label className="block text-xs font-medium text-white/70">
                     Target Depth Level
                   </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {(['beginner', 'intermediate', 'advanced'] as const).map((lvl) => (
-                      <button
-                        type="button"
-                        key={lvl}
-                        onClick={() => setExplanationLevel(lvl)}
-                        className={`py-1.5 rounded-[6px] text-xs font-medium capitalize transition-colors ${
-                          explanationLevel === lvl
-                            ? 'bg-[#0075de] text-white'
-                            : 'bg-[#191919] text-white/60 hover:text-white border border-white/[0.08]'
-                        }`}
-                      >
-                        {lvl}
-                      </button>
-                    ))}
-                  </div>
+                  <Tabs value={explanationLevel} onValueChange={(val) => setExplanationLevel(val as 'beginner' | 'intermediate' | 'advanced')}>
+                    <TabsList className="bg-[#191919] border border-white/[0.08] p-1 grid grid-cols-3 h-auto w-full">
+                      {(['beginner', 'intermediate', 'advanced'] as const).map((lvl) => (
+                        <TabsTrigger
+                          key={lvl}
+                          value={lvl}
+                          className="py-1.5 text-xs capitalize cursor-pointer text-center"
+                        >
+                          {lvl}
+                        </TabsTrigger>
+                      ))}
+                    </TabsList>
+                  </Tabs>
                 </div>
               )}
 

@@ -13,6 +13,8 @@ import { Modal } from '@/components/ui/Modal';
 import { Input, Textarea } from '@/components/ui/Input';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { toast } from '@/components/ui/Toast';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import confetti from 'canvas-confetti';
 
 type RevisionFilter = 'all' | 'today' | 'upcoming' | 'overdue' | 'completed';
@@ -122,35 +124,29 @@ export function RevisionCenterPage() {
         </Button>
       </div>
 
-      {/* Filter Tabs - Notion style */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-white/[0.06]">
-        {[
-          { key: 'today', label: 'Due Today', count: revisions.filter((r) => !r.is_completed && new Date(r.due_at).getTime() >= startOfToday && new Date(r.due_at).getTime() <= endOfToday).length },
-          { key: 'overdue', label: 'Overdue', count: revisions.filter((r) => !r.is_completed && new Date(r.due_at).getTime() < startOfToday).length },
-          { key: 'upcoming', label: 'Upcoming', count: revisions.filter((r) => !r.is_completed && new Date(r.due_at).getTime() > endOfToday).length },
-          { key: 'all', label: 'All Active', count: revisions.filter((r) => !r.is_completed).length },
-          { key: 'completed', label: 'Completed', count: revisions.filter((r) => r.is_completed).length }
-        ].map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveFilter(tab.key as RevisionFilter)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-[8px] text-xs font-medium transition-colors shrink-0 cursor-pointer ${
-              activeFilter === tab.key
-                ? 'bg-[#0075de] text-white'
-                : 'bg-[#202020] text-white/65 hover:text-white border border-white/[0.06]'
-            }`}
-          >
-            <span>{tab.label}</span>
-            <span
-              className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                activeFilter === tab.key ? 'bg-white/20' : 'bg-white/[0.08]'
-              }`}
+      {/* Filter Tabs - Radix UI Tabs */}
+      <Tabs value={activeFilter} onValueChange={(val) => setActiveFilter(val as RevisionFilter)}>
+        <TabsList className="bg-[#202020] border border-white/[0.08] p-1 h-auto flex flex-wrap gap-1">
+          {[
+            { key: 'today', label: 'Due Today', count: revisions.filter((r) => !r.is_completed && new Date(r.due_at).getTime() >= startOfToday && new Date(r.due_at).getTime() <= endOfToday).length },
+            { key: 'overdue', label: 'Overdue', count: revisions.filter((r) => !r.is_completed && new Date(r.due_at).getTime() < startOfToday).length },
+            { key: 'upcoming', label: 'Upcoming', count: revisions.filter((r) => !r.is_completed && new Date(r.due_at).getTime() > endOfToday).length },
+            { key: 'all', label: 'All Active', count: revisions.filter((r) => !r.is_completed).length },
+            { key: 'completed', label: 'Completed', count: revisions.filter((r) => r.is_completed).length }
+          ].map((tab) => (
+            <TabsTrigger
+              key={tab.key}
+              value={tab.key}
+              className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium cursor-pointer"
             >
-              {tab.count}
-            </span>
-          </button>
-        ))}
-      </div>
+              <span>{tab.label}</span>
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/[0.08]">
+                {tab.count}
+              </span>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
 
       {/* Task List */}
       {filteredTasks.length === 0 ? (
@@ -231,35 +227,52 @@ export function RevisionCenterPage() {
                   </div>
                 </div>
 
-                {/* Snooze & Interval Actions */}
+                {/* Snooze & Interval Actions with Radix Tooltips */}
                 {!task.is_completed && (
-                  <div className="flex items-center gap-1.5 self-end sm:self-center shrink-0">
-                    <span className="text-[11px] text-white/40 mr-1">Snooze:</span>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => handleSnooze(task.id, 1)}
-                      className="h-6 px-2 text-[10px]"
-                    >
-                      +1d
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => handleSnooze(task.id, 3)}
-                      className="h-6 px-2 text-[10px]"
-                    >
-                      +3d
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => handleSnooze(task.id, 7)}
-                      className="h-6 px-2 text-[10px]"
-                    >
-                      +7d
-                    </Button>
-                  </div>
+                  <TooltipProvider delayDuration={200}>
+                    <div className="flex items-center gap-1.5 self-end sm:self-center shrink-0">
+                      <span className="text-[11px] text-white/40 mr-1">Snooze:</span>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            onClick={() => handleSnooze(task.id, 1)}
+                            className="h-6 px-2 text-[10px]"
+                          >
+                            +1d
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Postpone by 1 day</TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            onClick={() => handleSnooze(task.id, 3)}
+                            className="h-6 px-2 text-[10px]"
+                          >
+                            +3d
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Postpone by 3 days</TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            onClick={() => handleSnooze(task.id, 7)}
+                            className="h-6 px-2 text-[10px]"
+                          >
+                            +7d
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Postpone by 1 week</TooltipContent>
+                      </Tooltip>
+                    </div>
+                  </TooltipProvider>
                 )}
               </Card>
             );

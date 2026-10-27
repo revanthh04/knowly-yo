@@ -13,6 +13,13 @@ import { Modal } from '@/components/ui/Modal';
 import { Input, Textarea } from '@/components/ui/Input';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { toast } from '@/components/ui/Toast';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription
+} from '@/components/ui/sheet';
 import { Submission } from '@/types';
 
 export function AssignmentsPage() {
@@ -286,57 +293,64 @@ export function AssignmentsPage() {
         </form>
       </Modal>
 
-      {/* Grade Submission Modal */}
-      <Modal
-        isOpen={gradeModalOpen}
-        onClose={() => setGradeModalOpen(false)}
-        title="Grade Student Submission"
-        description={`Evaluating submission from ${activeSubmission?.student_name}`}
-      >
-        <form onSubmit={handleGradeSubmission} className="space-y-4">
-          <div className="p-3 rounded-[8px] bg-[#191919] border border-white/[0.08] space-y-2 text-xs">
-            <span className="font-semibold text-white/40 uppercase tracking-wider block text-[10px]">
-              Student Solution Text:
-            </span>
-            <p className="text-white/80 whitespace-pre-line leading-relaxed">
-              {activeSubmission?.content}
-            </p>
-            {activeSubmission?.code_solution && (
-              <pre className="p-2.5 rounded-[6px] bg-[#141414] text-[#62aef0] font-mono text-[11px] overflow-x-auto border border-white/[0.06]">
-                <code>{activeSubmission.code_solution}</code>
-              </pre>
-            )}
-          </div>
+      {/* Grade Submission Slide-over Sheet */}
+      <Sheet open={gradeModalOpen} onOpenChange={(open) => !open && setGradeModalOpen(false)}>
+        <SheetContent side="right" className="sm:max-w-xl flex flex-col h-full overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle>Grade Student Submission</SheetTitle>
+            <SheetDescription>Evaluating submission from {activeSubmission?.student_name}</SheetDescription>
+          </SheetHeader>
 
-          <Input
-            label="Score (out of 100)"
-            type="number"
-            min="0"
-            max="100"
-            value={scoreInput}
-            onChange={(e) => setScoreInput(e.target.value)}
-            required
-          />
+          <form onSubmit={handleGradeSubmission} className="space-y-4 mt-4 flex-1 flex flex-col">
+            <div className="p-3.5 rounded-[8px] bg-[#191919] border border-white/[0.08] space-y-2 text-xs">
+              <span className="font-semibold text-white/40 uppercase tracking-wider block text-[10px]">
+                Student Solution Text:
+              </span>
+              <p className="text-white/80 whitespace-pre-line leading-relaxed font-sans">
+                {activeSubmission?.content}
+              </p>
+              {activeSubmission?.code_solution && (
+                <div className="mt-2 space-y-1">
+                  <span className="font-semibold text-white/40 uppercase tracking-wider block text-[10px]">
+                    Submitted Code:
+                  </span>
+                  <pre className="p-3 rounded-[6px] bg-[#141414] text-[#62aef0] font-mono text-[11px] overflow-x-auto border border-white/[0.06] max-h-60">
+                    <code>{activeSubmission.code_solution}</code>
+                  </pre>
+                </div>
+              )}
+            </div>
 
-          <Textarea
-            label="Instructor Feedback & Critique"
-            placeholder="Constructive feedback, edge cases missed, architecture tips..."
-            value={feedbackInput}
-            onChange={(e) => setFeedbackInput(e.target.value)}
-            rows={3}
-            required
-          />
+            <Input
+              label="Score (out of 100)"
+              type="number"
+              min="0"
+              max="100"
+              value={scoreInput}
+              onChange={(e) => setScoreInput(e.target.value)}
+              required
+            />
 
-          <div className="flex justify-end gap-2 pt-3">
-            <Button variant="ghost" size="sm" type="button" onClick={() => setGradeModalOpen(false)}>
-              Cancel
-            </Button>
-            <Button variant="primary" size="sm" type="submit">
-              Submit Grade
-            </Button>
-          </div>
-        </form>
-      </Modal>
+            <Textarea
+              label="Instructor Feedback & Critique"
+              placeholder="Constructive feedback, edge cases missed, architecture tips..."
+              value={feedbackInput}
+              onChange={(e) => setFeedbackInput(e.target.value)}
+              rows={4}
+              required
+            />
+
+            <div className="flex justify-end gap-2 pt-4 mt-auto border-t border-white/[0.06]">
+              <Button variant="ghost" size="sm" type="button" onClick={() => setGradeModalOpen(false)}>
+                Cancel
+              </Button>
+              <Button variant="primary" size="sm" type="submit">
+                Submit Grade
+              </Button>
+            </div>
+          </form>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

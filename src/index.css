@@ -254,3 +254,58 @@ ul[data-type="taskList"] li > div {
     page-break-inside: avoid;
   }
 }
+
+/* Radix UI & shadcn animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes scaleOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.96); }
+}
+
+@keyframes slideInFromTop {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInFromRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideOutToRight {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+@keyframes accordionDown {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordionUp {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+.animate-fade-in { animation: fadeIn 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-scale-in { animation: scaleIn 180ms cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-slide-down { animation: slideInFromTop 180ms cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-sheet-in { animation: slideInFromRight 220ms cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-sheet-out { animation: slideOutToRight 200ms cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-accordion-down { animation: accordionDown 200ms ease-out; }
+.animate-accordion-up { animation: accordionUp 200ms ease-out; }
+

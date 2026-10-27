@@ -17,6 +17,7 @@ import { Modal } from '@/components/ui/Modal';
 import { Input, Textarea } from '@/components/ui/Input';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { toast } from '@/components/ui/Toast';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export function QuestionBankPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -145,21 +146,19 @@ export function QuestionBankPage() {
             />
           </div>
 
-          <div className="flex items-center gap-1 overflow-x-auto pb-1">
-            {(['all', 'open', 'answered', 'resolved'] as const).map((st) => (
-              <button
-                key={st}
-                onClick={() => setStatusFilter(st)}
-                className={`px-2.5 py-1 rounded-[6px] text-xs font-medium capitalize transition-colors shrink-0 cursor-pointer ${
-                  statusFilter === st
-                    ? 'bg-[#0075de] text-white'
-                    : 'bg-[#202020] text-white/60 hover:text-white border border-white/[0.06]'
-                }`}
-              >
-                {st}
-              </button>
-            ))}
-          </div>
+          <Tabs value={statusFilter} onValueChange={(val) => setStatusFilter(val as 'all' | 'open' | 'answered' | 'resolved')}>
+            <TabsList className="bg-[#202020] border border-white/[0.08] p-1 h-auto flex flex-wrap gap-1">
+              {(['all', 'open', 'answered', 'resolved'] as const).map((st) => (
+                <TabsTrigger
+                  key={st}
+                  value={st}
+                  className="px-2.5 py-1 text-xs capitalize cursor-pointer"
+                >
+                  {st}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
 
           {/* List */}
           <div className="space-y-2 max-h-[70vh] overflow-y-auto pr-1">
