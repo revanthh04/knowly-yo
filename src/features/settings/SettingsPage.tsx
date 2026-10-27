@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  Settings as SettingsIcon,
   Database,
   Moon,
   Sun,
@@ -8,8 +7,7 @@ import {
   Shield,
   Download,
   RefreshCw,
-  CheckCircle2,
-  AlertCircle
+  CheckCircle2
 } from 'lucide-react';
 import { useAppStore } from '@/hooks/useAppStore';
 import { useTheme } from '@/hooks/useTheme';
@@ -22,7 +20,7 @@ import { toast } from '@/components/ui/Toast';
 
 export function SettingsPage() {
   const { store, currentUser, isTeacher, switchUser, resetToDefaults } = useAppStore();
-  const { theme, toggleTheme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const [aiKey, setAiKey] = useState(() => localStorage.getItem('knowly_ai_key') || '');
   const [savedKeySuccess, setSavedKeySuccess] = useState(false);
@@ -65,11 +63,11 @@ export function SettingsPage() {
   return (
     <div className="space-y-6 max-w-4xl animate-fade-in">
       {/* Header */}
-      <div className="pb-2 border-b border-slate-200 dark:border-slate-800">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <div className="pb-3 border-b border-white/[0.06]">
+        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white/95">
           Settings & Environment
         </h1>
-        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <p className="text-xs sm:text-sm text-white/50 mt-1 leading-relaxed">
           Configure visual themes, role permissions, PostgreSQL Supabase connectivity, and backups.
         </p>
       </div>
@@ -77,26 +75,26 @@ export function SettingsPage() {
       {/* User Profile & Role Card */}
       <Card className="space-y-4">
         <CardHeader>
-          <CardTitle className="text-base flex items-center gap-2">
-            <Shield className="w-4 h-4 text-violet-500" />
+          <CardTitle className="text-sm flex items-center gap-2">
+            <Shield className="w-4 h-4 text-[#0075de]" />
             <span>Active Account & Role Verification</span>
           </CardTitle>
         </CardHeader>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-slate-50 dark:bg-[#1a1e2b] border border-slate-200 dark:border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-[10px] bg-[#191919] border border-white/[0.08]">
           <div className="flex items-center gap-3">
             <img
               src={currentUser.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}
               alt={currentUser.full_name}
-              className="w-12 h-12 rounded-xl object-cover ring-2 ring-violet-500/50"
+              className="w-11 h-11 rounded-[8px] object-cover border border-white/[0.12]"
             />
             <div>
-              <p className="text-sm font-bold text-slate-900 dark:text-slate-100">
+              <p className="text-sm font-semibold text-white/95">
                 {currentUser.full_name}
               </p>
-              <p className="text-xs text-slate-400">{currentUser.email}</p>
+              <p className="text-xs text-white/40">{currentUser.email}</p>
               <div className="mt-1">
-                <Badge variant={isTeacher ? 'purple' : 'info'} className="text-[10px]">
+                <Badge variant={isTeacher ? 'blue' : 'info'} className="text-[10px]">
                   Role: {currentUser.role.toUpperCase()}
                 </Badge>
               </div>
@@ -133,48 +131,48 @@ export function SettingsPage() {
       {/* Visual Theme Selection */}
       <Card className="space-y-4">
         <CardHeader>
-          <CardTitle className="text-base">Visual Appearance Theme</CardTitle>
+          <CardTitle className="text-sm">Visual Appearance Theme</CardTitle>
         </CardHeader>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <button
             onClick={() => setTheme('dark')}
-            className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between ${
+            className={`p-4 rounded-[12px] border text-left transition-colors cursor-pointer flex items-center justify-between ${
               theme === 'dark'
-                ? 'border-violet-600 bg-violet-500/10 dark:bg-violet-500/15 ring-2 ring-violet-500/30'
-                : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                ? 'border-[#0075de] bg-[#0075de]/[0.08]'
+                : 'border-white/[0.08] bg-[#191919] hover:border-white/[0.16]'
             }`}
           >
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-slate-900 text-violet-400">
-                <Moon className="w-5 h-5" />
+              <div className="p-2 rounded-[8px] bg-[#191919] text-[#62aef0]">
+                <Moon className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-900 dark:text-slate-100">Graphite Dark (Default)</p>
-                <p className="text-[11px] text-slate-400">Deep charcoal, easy on the eyes during coding</p>
+                <p className="text-xs font-semibold text-white/90">Notion Dark (Default)</p>
+                <p className="text-[11px] text-white/40">Warm matte obsidian canvas with crisp hairline borders</p>
               </div>
             </div>
-            {theme === 'dark' && <CheckCircle2 className="w-5 h-5 text-violet-500" />}
+            {theme === 'dark' && <CheckCircle2 className="w-4 h-4 text-[#0075de]" />}
           </button>
 
           <button
             onClick={() => setTheme('light')}
-            className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between ${
+            className={`p-4 rounded-[12px] border text-left transition-colors cursor-pointer flex items-center justify-between ${
               theme === 'light'
-                ? 'border-violet-600 bg-violet-500/10 ring-2 ring-violet-500/30'
-                : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                ? 'border-[#0075de] bg-[#0075de]/[0.08]'
+                : 'border-white/[0.08] bg-[#191919] hover:border-white/[0.16]'
             }`}
           >
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-amber-100 text-amber-600">
-                <Sun className="w-5 h-5" />
+              <div className="p-2 rounded-[8px] bg-[#f6f5f4] text-[#111111]">
+                <Sun className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-900 dark:text-slate-100">Clean Light Mode</p>
-                <p className="text-[11px] text-slate-400">Bright, high contrast for daylight preparation</p>
+                <p className="text-xs font-semibold text-white/90">Notion Paper Warmth (Light)</p>
+                <p className="text-[11px] text-white/40">Tactile warm off-white canvas under afternoon sun</p>
               </div>
             </div>
-            {theme === 'light' && <CheckCircle2 className="w-5 h-5 text-violet-500" />}
+            {theme === 'light' && <CheckCircle2 className="w-4 h-4 text-[#0075de]" />}
           </button>
         </div>
       </Card>
@@ -182,8 +180,8 @@ export function SettingsPage() {
       {/* Supabase Connection Status Card */}
       <Card className="space-y-4">
         <CardHeader>
-          <CardTitle className="text-base flex items-center gap-2">
-            <Database className="w-4 h-4 text-sky-500" />
+          <CardTitle className="text-sm flex items-center gap-2">
+            <Database className="w-4 h-4 text-[#0075de]" />
             <span>Supabase PostgreSQL & Row Level Security</span>
           </CardTitle>
           <Badge variant={isSupabaseConfigured ? 'success' : 'neutral'}>
@@ -191,27 +189,27 @@ export function SettingsPage() {
           </Badge>
         </CardHeader>
 
-        <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p className="text-xs text-white/60 leading-relaxed">
           Knowly-Yo features a complete 20-table schema with strict Row Level Security (RLS) policies. When remote Supabase credentials are configured in your <code>.env</code>, all data seamlessly syncs with your remote PostgreSQL instance. Otherwise, everything is persistently stored locally in the browser with full fidelity.
         </p>
 
-        <div className="p-3.5 rounded-xl bg-slate-950 font-mono text-xs text-slate-300 space-y-1">
-          <p className="text-slate-500"># Set credentials in .env to connect remote database:</p>
-          <p className="text-violet-400">VITE_SUPABASE_URL=https://your-project.supabase.co</p>
-          <p className="text-violet-400">VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</p>
+        <div className="p-3.5 rounded-[8px] bg-[#141414] font-mono text-xs text-white/70 space-y-1 border border-white/[0.06]">
+          <p className="text-white/35"># Set credentials in .env to connect remote database:</p>
+          <p className="text-[#62aef0]">VITE_SUPABASE_URL=https://your-project.supabase.co</p>
+          <p className="text-[#62aef0]">VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</p>
         </div>
       </Card>
 
       {/* AI Key Configuration Card */}
       <Card className="space-y-4">
         <CardHeader>
-          <CardTitle className="text-base flex items-center gap-2">
-            <Key className="w-4 h-4 text-amber-500" />
+          <CardTitle className="text-sm flex items-center gap-2">
+            <Key className="w-4 h-4 text-[#ffb110]" />
             <span>AI Provider API Credentials (Optional)</span>
           </CardTitle>
         </CardHeader>
 
-        <p className="text-xs text-slate-600 dark:text-slate-300">
+        <p className="text-xs text-white/60">
           Knowly-Yo includes intelligent offline educational generation templates. You can also provide an optional Gemini or OpenAI API key to unlock custom remote completions.
         </p>
 
@@ -234,13 +232,13 @@ export function SettingsPage() {
       {/* Backup and Maintenance Card */}
       <Card className="space-y-4">
         <CardHeader>
-          <CardTitle className="text-base">Data Backup & Maintenance</CardTitle>
+          <CardTitle className="text-sm">Data Backup & Maintenance</CardTitle>
         </CardHeader>
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <p className="text-xs font-bold text-slate-900 dark:text-slate-100">Export JSON Backup</p>
-            <p className="text-[11px] text-slate-400">Download complete notes, syllabus, and submissions archive.</p>
+            <p className="text-xs font-semibold text-white/90">Export JSON Backup</p>
+            <p className="text-[11px] text-white/40">Download complete notes, syllabus, and submissions archive.</p>
           </div>
           <Button variant="outline" size="sm" onClick={handleExportBackup} className="gap-2 text-xs">
             <Download className="w-4 h-4" />
@@ -248,10 +246,10 @@ export function SettingsPage() {
           </Button>
         </div>
 
-        <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="pt-3 border-t border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <p className="text-xs font-bold text-rose-500">Reset Demo Data</p>
-            <p className="text-[11px] text-slate-400">Restore factory sample notes for Java, SQL, and DSA.</p>
+            <p className="text-xs font-semibold text-[#ff6b57]">Reset Demo Data</p>
+            <p className="text-[11px] text-white/40">Restore factory sample notes for Java, SQL, and DSA.</p>
           </div>
           <Button
             variant="danger"

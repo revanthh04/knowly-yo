@@ -2,22 +2,18 @@ import { useState } from 'react';
 import {
   FileCheck2,
   Plus,
-  Calendar,
   Clock,
-  User,
-  CheckCircle2,
-  AlertCircle,
-  Award
+  User
 } from 'lucide-react';
 import { useAppStore } from '@/hooks/useAppStore';
-import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Modal } from '@/components/ui/Modal';
 import { Input, Textarea } from '@/components/ui/Input';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { toast } from '@/components/ui/Toast';
-import { Assignment, Submission } from '@/types';
+import { Submission } from '@/types';
 
 export function AssignmentsPage() {
   const { store } = useAppStore();
@@ -76,12 +72,12 @@ export function AssignmentsPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-white/[0.06]">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white/95">
             Cohort Assignments & Grading
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-white/50 mt-1 leading-relaxed">
             Assign problem sets, review student code submissions, and publish grading feedback.
           </p>
         </div>
@@ -90,9 +86,9 @@ export function AssignmentsPage() {
           variant="primary"
           size="sm"
           onClick={() => setCreateModalOpen(true)}
-          className="gap-2"
+          className="gap-1.5"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-3.5 h-3.5" />
           <span>New Assignment</span>
         </Button>
       </div>
@@ -100,8 +96,8 @@ export function AssignmentsPage() {
       {/* Assignments & Submissions Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Active Assignments */}
-        <div className="space-y-4">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+        <div className="space-y-3.5">
+          <h2 className="text-[10px] font-semibold uppercase tracking-wider text-white/40">
             Active Assignments ({assignments.length})
           </h2>
 
@@ -121,20 +117,20 @@ export function AssignmentsPage() {
               return (
                 <Card key={asg.id} className="space-y-3">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-base font-bold text-slate-900 dark:text-slate-100">
+                    <span className="text-sm font-semibold text-white/95">
                       {asg.title}
                     </span>
-                    <Badge variant="purple" className="text-xs">
+                    <Badge variant="blue" className="text-xs">
                       {batch?.name || 'Batch'}
                     </Badge>
                   </div>
 
-                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  <p className="text-xs text-white/60 leading-relaxed">
                     {asg.description}
                   </p>
 
-                  <div className="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800">
-                    <div className="flex items-center gap-1.5 text-amber-500 font-medium">
+                  <div className="flex items-center justify-between text-xs text-white/40 pt-2 border-t border-white/[0.06]">
+                    <div className="flex items-center gap-1.5 text-[#ffc940] font-medium">
                       <Clock className="w-3.5 h-3.5" />
                       <span>Due {new Date(asg.due_at).toLocaleDateString()}</span>
                     </div>
@@ -149,8 +145,8 @@ export function AssignmentsPage() {
         </div>
 
         {/* Student Submissions Stream */}
-        <div className="space-y-4">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+        <div className="space-y-3.5">
+          <h2 className="text-[10px] font-semibold uppercase tracking-wider text-white/40">
             Student Submissions ({submissions.length})
           </h2>
 
@@ -165,33 +161,33 @@ export function AssignmentsPage() {
               <Card key={subm.id} className="space-y-3">
                 <div className="flex items-center justify-between gap-2">
                   <div>
-                    <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
+                    <span className="text-xs font-semibold text-white/95">
                       {subm.student_name}
                     </span>
-                    <p className="text-[11px] text-slate-400 truncate">{subm.assignment_title}</p>
+                    <p className="text-[11px] text-white/40 truncate">{subm.assignment_title}</p>
                   </div>
                   <Badge variant={subm.status === 'graded' ? 'success' : 'warning'}>
                     {subm.status.toUpperCase()}
                   </Badge>
                 </div>
 
-                <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
+                <p className="text-xs text-white/65 line-clamp-2">
                   {subm.content}
                 </p>
 
                 {subm.score !== undefined && (
-                  <div className="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-600 dark:text-emerald-400">
+                  <div className="p-2.5 rounded-[8px] bg-emerald-500/[0.08] border border-emerald-500/[0.2] text-xs text-emerald-400">
                     <strong>Score: {subm.score}/100</strong>
-                    {subm.feedback && <p className="mt-1 text-[11px]">{subm.feedback}</p>}
+                    {subm.feedback && <p className="mt-1 text-[11px] text-white/70">{subm.feedback}</p>}
                   </div>
                 )}
 
-                <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
-                  <span className="text-[10px] text-slate-400">
+                <div className="flex items-center justify-between pt-2 border-t border-white/[0.06]">
+                  <span className="text-[10px] text-white/40">
                     Submitted {new Date(subm.submitted_at).toLocaleDateString()}
                   </span>
                   <Button
-                    variant="outline"
+                    variant="secondary"
                     size="sm"
                     onClick={() => {
                       setActiveSubmission(subm);
@@ -228,13 +224,13 @@ export function AssignmentsPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label className="block text-xs font-medium text-white/70">
                 Assigned Batch
               </label>
               <select
                 value={selectedBatchId}
                 onChange={(e) => setSelectedBatchId(e.target.value)}
-                className="w-full px-3.5 py-2 text-sm rounded-lg bg-white dark:bg-[#1a1e2b] border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100"
+                className="w-full px-3 py-1.5 text-sm rounded-[8px] bg-[#191919] border border-white/[0.1] text-white focus:outline-none focus:border-[#0075de]"
               >
                 {batches.map((b) => (
                   <option key={b.id} value={b.id}>
@@ -245,13 +241,13 @@ export function AssignmentsPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label className="block text-xs font-medium text-white/70">
                 Subject
               </label>
               <select
                 value={selectedSubjectId}
                 onChange={(e) => setSelectedSubjectId(e.target.value)}
-                className="w-full px-3.5 py-2 text-sm rounded-lg bg-white dark:bg-[#1a1e2b] border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100"
+                className="w-full px-3 py-1.5 text-sm rounded-[8px] bg-[#191919] border border-white/[0.1] text-white focus:outline-none focus:border-[#0075de]"
               >
                 {subjects.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -298,15 +294,15 @@ export function AssignmentsPage() {
         description={`Evaluating submission from ${activeSubmission?.student_name}`}
       >
         <form onSubmit={handleGradeSubmission} className="space-y-4">
-          <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#1a1e2b] border border-slate-200 dark:border-slate-800 space-y-2 text-xs">
-            <span className="font-bold text-slate-400 uppercase tracking-wider block text-[10px]">
+          <div className="p-3 rounded-[8px] bg-[#191919] border border-white/[0.08] space-y-2 text-xs">
+            <span className="font-semibold text-white/40 uppercase tracking-wider block text-[10px]">
               Student Solution Text:
             </span>
-            <p className="text-slate-700 dark:text-slate-200 whitespace-pre-line">
+            <p className="text-white/80 whitespace-pre-line leading-relaxed">
               {activeSubmission?.content}
             </p>
             {activeSubmission?.code_solution && (
-              <pre className="p-2 rounded bg-slate-950 text-emerald-400 font-mono text-[11px] overflow-x-auto">
+              <pre className="p-2.5 rounded-[6px] bg-[#141414] text-[#62aef0] font-mono text-[11px] overflow-x-auto border border-white/[0.06]">
                 <code>{activeSubmission.code_solution}</code>
               </pre>
             )}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -6,7 +6,6 @@ import Placeholder from '@tiptap/extension-placeholder';
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
 import {
-  Save,
   ArrowLeft,
   Share2,
   Printer,
@@ -28,9 +27,7 @@ import {
   Italic,
   Strikethrough,
   Copy,
-  Check,
-  Eye,
-  FileText
+  Check
 } from 'lucide-react';
 import { useAppStore } from '@/hooks/useAppStore';
 import { Button } from '@/components/ui/Button';
@@ -116,7 +113,7 @@ export function NoteEditorPage() {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        codeBlock: false // we handle custom code block or default
+        codeBlock: false
       }),
       Placeholder.configure({
         placeholder: 'Write your classroom teaching script, code snippets, and explanations...'
@@ -234,8 +231,8 @@ export function NoteEditorPage() {
   if (!note) {
     return (
       <div className="text-center py-16 space-y-4">
-        <h2 className="text-xl font-bold">Note not found</h2>
-        <p className="text-xs text-slate-400">The note may have been deleted or requires authorization.</p>
+        <h2 className="text-base font-semibold text-white/90">Note not found</h2>
+        <p className="text-xs text-white/40">The note may have been deleted or requires authorization.</p>
         <Button variant="primary" size="sm" onClick={() => navigate('/knowledge')}>
           Return to Knowledge Hub
         </Button>
@@ -244,9 +241,9 @@ export function NoteEditorPage() {
   }
 
   return (
-    <div className={`space-y-4 ${presentationMode ? 'fixed inset-0 z-50 bg-white dark:bg-[#0c0e14] p-8 overflow-y-auto' : ''}`}>
+    <div className={`space-y-4 ${presentationMode ? 'fixed inset-0 z-50 bg-[#191919] p-8 overflow-y-auto' : ''}`}>
       {/* Top Action Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800 no-print">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.06] no-print">
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
@@ -254,12 +251,12 @@ export function NoteEditorPage() {
             onClick={() => navigate('/knowledge')}
             className="h-8 px-2 text-xs"
           >
-            <ArrowLeft className="w-4 h-4 mr-1" />
+            <ArrowLeft className="w-3.5 h-3.5 mr-1" />
             <span>Library</span>
           </Button>
 
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <span className="font-medium text-slate-600 dark:text-slate-300">
+          <div className="flex items-center gap-2 text-xs text-white/40">
+            <span className="font-medium text-white/70">
               {subject?.name || 'Subject'}
             </span>
             <span>/</span>
@@ -270,31 +267,31 @@ export function NoteEditorPage() {
         {/* Status Indicators & Action Buttons */}
         <div className="flex items-center gap-2 flex-wrap">
           {/* Autosave Status Pill */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs bg-slate-100 dark:bg-[#1a1e2b] text-slate-500 border border-slate-200/60 dark:border-slate-800">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] text-xs bg-[#202020] text-white/50 border border-white/[0.06]">
             {saveStatus === 'saving' && (
               <>
-                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-[#ffb110] animate-pulse" />
                 <span>Saving...</span>
               </>
             )}
             {saveStatus === 'saved' && (
               <>
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                <span className="text-slate-600 dark:text-slate-400">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="text-white/60">
                   Saved {lastSavedTime && `at ${lastSavedTime}`}
                 </span>
               </>
             )}
             {saveStatus === 'unsaved' && (
               <>
-                <Clock className="w-3.5 h-3.5 text-amber-500" />
+                <Clock className="w-3.5 h-3.5 text-[#ffb110]" />
                 <span>Unsaved changes</span>
               </>
             )}
             {saveStatus === 'failed' && (
               <>
-                <span className="w-2 h-2 rounded-full bg-rose-500" />
-                <span className="text-rose-500 font-semibold">Save failed</span>
+                <span className="w-2 h-2 rounded-full bg-[#f64932]" />
+                <span className="text-[#ff6b57] font-medium">Save failed</span>
               </>
             )}
           </div>
@@ -305,7 +302,7 @@ export function NoteEditorPage() {
               variant="outline"
               size="sm"
               onClick={handleInsertTemplate}
-              className="h-8 text-xs gap-1.5 text-violet-600 dark:text-violet-400 border-violet-500/30"
+              className="h-8 text-xs gap-1.5 text-[#62aef0] border-[#0075de]/30"
               title="Insert 10-point structured teaching template"
             >
               <Sparkles className="w-3.5 h-3.5" />
@@ -356,7 +353,7 @@ export function NoteEditorPage() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setDeleteConfirmOpen(true)}
-                className="h-8 w-8 p-0 text-slate-400 hover:text-rose-500"
+                className="h-8 w-8 p-0 text-white/40 hover:text-[#ff6b57]"
                 title="Delete note"
               >
                 <Trash2 className="w-4 h-4" />
@@ -367,181 +364,181 @@ export function NoteEditorPage() {
       </div>
 
       {/* Note Header Title Input */}
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         {isTeacher ? (
           <input
             type="text"
             value={title}
             onChange={(e) => handleTitleChange(e.target.value)}
             placeholder="Note Title..."
-            className="w-full text-2xl sm:text-3xl font-bold bg-transparent border-none text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-0 px-0"
+            className="w-full text-2xl sm:text-3xl font-bold bg-transparent border-none text-white/95 placeholder-white/25 focus:outline-none focus:ring-0 px-0 tracking-tight"
           />
         ) : (
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white/95 tracking-tight">
             {note.title}
           </h1>
         )}
 
-        <div className="flex items-center gap-2 flex-wrap text-xs text-slate-400">
+        <div className="flex items-center gap-2 flex-wrap text-xs text-white/40">
           <Badge variant={isPublishedState ? 'success' : 'neutral'}>
             {isPublishedState ? 'Published to Students' : 'Private Teacher Script'}
           </Badge>
           <span>•</span>
           <span>Last edited: {new Date(note.updated_at).toLocaleDateString()}</span>
           {note.tags.map((t) => (
-            <span key={t} className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-[10px]">
+            <span key={t} className="px-1.5 py-0.2 rounded bg-white/[0.06] text-[10px]">
               #{t}
             </span>
           ))}
         </div>
       </div>
 
-      {/* Editor Formatting Toolbar (visible for Teacher when not in presentation) */}
+      {/* Editor Formatting Toolbar (Notion compact style) */}
       {isTeacher && editor && !presentationMode && (
-        <div className="flex items-center gap-1 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#141721] overflow-x-auto no-print">
+        <div className="flex items-center gap-1 p-1.5 rounded-[8px] border border-white/[0.08] bg-[#202020] overflow-x-auto no-print">
           <button
             onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-            className={`p-1.5 rounded-lg text-xs font-semibold ${
+            className={`p-1.5 rounded-[6px] text-xs font-semibold ${
               editor.isActive('heading', { level: 1 })
-                ? 'bg-violet-600 text-white'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#0075de] text-white'
+                : 'text-white/60 hover:bg-[#252525] hover:text-white'
             }`}
             title="Heading 1"
           >
-            <Heading1 className="w-4 h-4" />
+            <Heading1 className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-            className={`p-1.5 rounded-lg text-xs font-semibold ${
+            className={`p-1.5 rounded-[6px] text-xs font-semibold ${
               editor.isActive('heading', { level: 2 })
-                ? 'bg-violet-600 text-white'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#0075de] text-white'
+                : 'text-white/60 hover:bg-[#252525] hover:text-white'
             }`}
             title="Heading 2"
           >
-            <Heading2 className="w-4 h-4" />
+            <Heading2 className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-            className={`p-1.5 rounded-lg text-xs font-semibold ${
+            className={`p-1.5 rounded-[6px] text-xs font-semibold ${
               editor.isActive('heading', { level: 3 })
-                ? 'bg-violet-600 text-white'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#0075de] text-white'
+                : 'text-white/60 hover:bg-[#252525] hover:text-white'
             }`}
             title="Heading 3"
           >
-            <Heading3 className="w-4 h-4" />
+            <Heading3 className="w-3.5 h-3.5" />
           </button>
 
-          <div className="w-[1px] h-5 bg-slate-200 dark:bg-slate-800 mx-1" />
+          <div className="w-[1px] h-4 bg-white/[0.08] mx-1" />
 
           <button
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`p-1.5 rounded-lg text-xs font-semibold ${
+            className={`p-1.5 rounded-[6px] text-xs font-semibold ${
               editor.isActive('bold')
-                ? 'bg-violet-600 text-white'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#0075de] text-white'
+                : 'text-white/60 hover:bg-[#252525] hover:text-white'
             }`}
             title="Bold"
           >
-            <Bold className="w-4 h-4" />
+            <Bold className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`p-1.5 rounded-lg text-xs font-semibold ${
+            className={`p-1.5 rounded-[6px] text-xs font-semibold ${
               editor.isActive('italic')
-                ? 'bg-violet-600 text-white'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#0075de] text-white'
+                : 'text-white/60 hover:bg-[#252525] hover:text-white'
             }`}
             title="Italic"
           >
-            <Italic className="w-4 h-4" />
+            <Italic className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={`p-1.5 rounded-lg text-xs font-semibold ${
+            className={`p-1.5 rounded-[6px] text-xs font-semibold ${
               editor.isActive('strike')
-                ? 'bg-violet-600 text-white'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#0075de] text-white'
+                : 'text-white/60 hover:bg-[#252525] hover:text-white'
             }`}
             title="Strikethrough"
           >
-            <Strikethrough className="w-4 h-4" />
+            <Strikethrough className="w-3.5 h-3.5" />
           </button>
 
-          <div className="w-[1px] h-5 bg-slate-200 dark:bg-slate-800 mx-1" />
+          <div className="w-[1px] h-4 bg-white/[0.08] mx-1" />
 
           <button
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-            className={`p-1.5 rounded-lg text-xs font-semibold ${
+            className={`p-1.5 rounded-[6px] text-xs font-semibold ${
               editor.isActive('codeBlock')
-                ? 'bg-violet-600 text-white'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#0075de] text-white'
+                : 'text-white/60 hover:bg-[#252525] hover:text-white'
             }`}
             title="Code Block"
           >
-            <Code className="w-4 h-4" />
+            <Code className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={`p-1.5 rounded-lg text-xs font-semibold ${
+            className={`p-1.5 rounded-[6px] text-xs font-semibold ${
               editor.isActive('bulletList')
-                ? 'bg-violet-600 text-white'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#0075de] text-white'
+                : 'text-white/60 hover:bg-[#252525] hover:text-white'
             }`}
             title="Bullet List"
           >
-            <List className="w-4 h-4" />
+            <List className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={`p-1.5 rounded-lg text-xs font-semibold ${
+            className={`p-1.5 rounded-[6px] text-xs font-semibold ${
               editor.isActive('orderedList')
-                ? 'bg-violet-600 text-white'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#0075de] text-white'
+                : 'text-white/60 hover:bg-[#252525] hover:text-white'
             }`}
             title="Numbered List"
           >
-            <ListOrdered className="w-4 h-4" />
+            <ListOrdered className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleTaskList().run()}
-            className={`p-1.5 rounded-lg text-xs font-semibold ${
+            className={`p-1.5 rounded-[6px] text-xs font-semibold ${
               editor.isActive('taskList')
-                ? 'bg-violet-600 text-white'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#0075de] text-white'
+                : 'text-white/60 hover:bg-[#252525] hover:text-white'
             }`}
             title="Task Checklist"
           >
-            <ListTodo className="w-4 h-4" />
+            <ListTodo className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            className={`p-1.5 rounded-lg text-xs font-semibold ${
+            className={`p-1.5 rounded-[6px] text-xs font-semibold ${
               editor.isActive('blockquote')
-                ? 'bg-violet-600 text-white'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-[#0075de] text-white'
+                : 'text-white/60 hover:bg-[#252525] hover:text-white'
             }`}
             title="Blockquote"
           >
-            <Quote className="w-4 h-4" />
+            <Quote className="w-3.5 h-3.5" />
           </button>
 
-          <div className="w-[1px] h-5 bg-slate-200 dark:bg-slate-800 mx-1" />
+          <div className="w-[1px] h-4 bg-white/[0.08] mx-1" />
 
           <button
             onClick={handleCopyCodeSnippet}
-            className="p-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="p-1.5 rounded-[6px] text-xs font-semibold text-white/60 hover:bg-[#252525] hover:text-white"
             title="Copy Note Text"
           >
-            {copiedCode ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+            {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
           </button>
         </div>
       )}
 
       {/* Main Note Content Surface */}
       <div
-        className={`rounded-2xl border border-slate-200 dark:border-slate-800/80 bg-white dark:bg-[#141721] p-6 sm:p-10 shadow-sm min-h-[500px] transition-all ${
+        className={`rounded-[12px] border border-white/[0.08] bg-[#202020] p-6 sm:p-10 min-h-[500px] transition-all ${
           presentationMode ? 'max-w-4xl mx-auto shadow-2xl text-lg' : ''
         }`}
       >
@@ -556,18 +553,18 @@ export function NoteEditorPage() {
         description="Select which student batches have access to view this note."
       >
         <div className="space-y-4">
-          <label className="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#1a1e2b] cursor-pointer">
+          <label className="flex items-center gap-3 p-3 rounded-[8px] border border-white/[0.08] bg-[#191919] cursor-pointer">
             <input
               type="checkbox"
               checked={isPublishedState}
               onChange={(e) => setIsPublishedState(e.target.checked)}
-              className="w-4 h-4 rounded text-violet-600 focus:ring-violet-500"
+              className="w-4 h-4 rounded text-[#0075de] focus:ring-[#0075de]"
             />
             <div>
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+              <p className="text-sm font-medium text-white/90">
                 Publish Note to Students
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-white/40">
                 When unchecked, this note remains a private teacher script visible only to you.
               </p>
             </div>
@@ -575,7 +572,7 @@ export function NoteEditorPage() {
 
           {isPublishedState && (
             <div className="space-y-2">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label className="block text-xs font-medium text-white/70">
                 Authorized Student Batches
               </label>
               <div className="space-y-1.5">
@@ -584,7 +581,7 @@ export function NoteEditorPage() {
                   return (
                     <label
                       key={b.id}
-                      className="flex items-center justify-between p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer"
+                      className="flex items-center justify-between p-2.5 rounded-[8px] border border-white/[0.06] hover:bg-[#252525] cursor-pointer"
                     >
                       <div className="flex items-center gap-2.5">
                         <input
@@ -597,13 +594,13 @@ export function NoteEditorPage() {
                               setSelectedBatches(selectedBatches.filter((item) => item !== b.id));
                             }
                           }}
-                          className="w-4 h-4 rounded text-violet-600 focus:ring-violet-500"
+                          className="w-4 h-4 rounded text-[#0075de] focus:ring-[#0075de]"
                         />
-                        <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                        <span className="text-xs font-medium text-white/85">
                           {b.name}
                         </span>
                       </div>
-                      <Badge variant="purple" className="text-[10px]">
+                      <Badge variant="blue" className="text-[10px]">
                         {b.code}
                       </Badge>
                     </label>

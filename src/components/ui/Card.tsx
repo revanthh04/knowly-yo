@@ -6,11 +6,12 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Card({ className, hover = false, children, ...props }: CardProps) {
+  // Notion Card: #202020 on #191919 canvas, 12px corners, 1px hairline border, zero drop-shadow
   return (
     <div
       className={cn(
-        'rounded-xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-[#141721] p-5 shadow-sm transition-all',
-        hover && 'hover:border-violet-500/50 hover:shadow-md dark:hover:border-violet-500/40 hover:-translate-y-0.5 cursor-pointer',
+        'rounded-[12px] border border-white/[0.08] bg-[#202020] p-5 transition-colors duration-200',
+        hover && 'hover:border-white/[0.18] hover:bg-[#232323] cursor-pointer',
         className
       )}
       {...props}
@@ -22,7 +23,7 @@ export function Card({ className, hover = false, children, ...props }: CardProps
 
 export function CardHeader({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('flex items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-slate-800/60', className)} {...props}>
+    <div className={cn('flex items-center justify-between pb-3 mb-3 border-b border-white/[0.06]', className)} {...props}>
       {children}
     </div>
   );
@@ -30,7 +31,7 @@ export function CardHeader({ className, children, ...props }: React.HTMLAttribut
 
 export function CardTitle({ className, children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h3 className={cn('text-base font-semibold text-slate-900 dark:text-slate-100', className)} {...props}>
+    <h3 className={cn('text-[15px] font-semibold text-white/90 tracking-tight', className)} {...props}>
       {children}
     </h3>
   );

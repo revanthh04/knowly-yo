@@ -39,29 +39,29 @@ export function Modal({ isOpen, onClose, title, description, children, maxWidth 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-      {/* Backdrop */}
+      {/* Backdrop with subtle dimming */}
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity animate-fade-in"
+        className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity"
         onClick={onClose}
       />
 
-      {/* Dialog Content */}
+      {/* Notion Dialog: #202020 surface, 12px corners, 1px hairline border */}
       <div
         className={cn(
-          'relative w-full rounded-2xl bg-white dark:bg-[#141721] border border-slate-200 dark:border-slate-800 p-6 shadow-2xl transition-all z-10 max-h-[90vh] flex flex-col',
+          'relative w-full rounded-[12px] bg-[#202020] border border-white/[0.08] p-6 transition-all z-10 max-h-[90vh] flex flex-col',
           maxWidths[maxWidth]
         )}
       >
-        <div className="flex items-start justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-start justify-between pb-4 border-b border-white/[0.06]">
           <div>
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{title}</h2>
-            {description && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{description}</p>}
+            <h2 className="text-base font-semibold text-white/90 tracking-tight">{title}</h2>
+            {description && <p className="text-xs text-white/45 mt-1 leading-relaxed">{description}</p>}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-1 rounded-[6px] text-white/40 hover:text-white/80 hover:bg-[#252525] transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 

@@ -4,14 +4,10 @@ import {
   Plus,
   Copy,
   Check,
-  BookOpen,
-  Calendar,
-  Key,
-  ShieldCheck,
-  UserCheck
+  BookOpen
 } from 'lucide-react';
 import { useAppStore } from '@/hooks/useAppStore';
-import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Modal } from '@/components/ui/Modal';
@@ -55,12 +51,12 @@ export function BatchesPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-white/[0.06]">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white/95">
             Student Batches & Groups
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-white/50 mt-1 leading-relaxed">
             Manage cohort enrollment, invite codes, and granular access to published technical scripts.
           </p>
         </div>
@@ -70,9 +66,9 @@ export function BatchesPage() {
             variant="primary"
             size="sm"
             onClick={() => setCreateModalOpen(true)}
-            className="gap-2"
+            className="gap-1.5"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5" />
             <span>Create New Batch</span>
           </Button>
         )}
@@ -88,7 +84,7 @@ export function BatchesPage() {
           onAction={isTeacher ? () => setCreateModalOpen(true) : undefined}
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {batches.map((batch) => {
             const batchNotes = notes.filter((n) => n.published_to_batches?.includes(batch.id));
 
@@ -96,38 +92,38 @@ export function BatchesPage() {
               <Card key={batch.id} className="flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-2">
-                    <span className="text-base font-bold text-slate-900 dark:text-slate-100">
+                    <span className="text-sm font-semibold text-white/95">
                       {batch.name}
                     </span>
-                    <Badge variant="purple" className="text-xs font-mono">
+                    <Badge variant="blue" className="text-xs font-mono">
                       {batch.code}
                     </Badge>
                   </div>
 
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">
+                  <p className="text-xs text-white/50 mb-4 leading-relaxed">
                     {batch.description || 'No description provided.'}
                   </p>
 
                   {/* Student Invite Code Box */}
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#1a1e2b] border border-slate-200 dark:border-slate-800/80 flex items-center justify-between">
+                  <div className="p-3 rounded-[8px] bg-[#191919] border border-white/[0.08] flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                      <span className="text-[10px] font-medium text-white/40 uppercase tracking-wider block">
                         Student Invite Code
                       </span>
-                      <span className="text-sm font-mono font-bold text-violet-600 dark:text-violet-400">
+                      <span className="text-sm font-mono font-bold text-[#62aef0]">
                         {batch.code}
                       </span>
                     </div>
 
                     <Button
-                      variant="outline"
+                      variant="secondary"
                       size="sm"
                       onClick={() => handleCopyCode(batch.code, batch.id)}
-                      className="h-8 px-2.5 text-xs gap-1.5"
+                      className="h-7 px-2.5 text-xs gap-1.5"
                     >
                       {copiedCodeId === batch.id ? (
                         <>
-                          <Check className="w-3.5 h-3.5 text-emerald-500" />
+                          <Check className="w-3.5 h-3.5 text-emerald-400" />
                           <span>Copied</span>
                         </>
                       ) : (
@@ -140,13 +136,13 @@ export function BatchesPage() {
                   </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+                <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs text-white/40">
                   <div className="flex items-center gap-1.5">
-                    <BookOpen className="w-3.5 h-3.5 text-slate-400" />
+                    <BookOpen className="w-3.5 h-3.5 text-white/40" />
                     <span>{batchNotes.length} published note(s)</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <Users className="w-3.5 h-3.5 text-slate-400" />
+                    <Users className="w-3.5 h-3.5 text-white/40" />
                     <span>{batch.student_count || 1} enrolled</span>
                   </div>
                 </div>

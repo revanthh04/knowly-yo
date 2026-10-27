@@ -1,38 +1,90 @@
 @import "tailwindcss";
 
+@theme {
+  /* Notion Palette Tokens */
+  --color-notion-blue: #0075de;
+  --color-notion-blue-hover: #0060b9;
+  --color-paper-warmth: #f6f5f4;
+  --color-pure-white: #ffffff;
+  --color-ink-black: #000000;
+  --color-charcoal: #111111;
+  --color-stone: #757575;
+  --color-graphite: #615d59;
+  --color-slate: #696969;
+  --color-sky-tint: #e6f3fe;
+  --color-marigold: #ffb110;
+  --color-coral: #f64932;
+  --color-saffron: #e89d01;
+  --color-vermillion: #e32d14;
+  --color-mocha: #b18164;
+  --color-signal-blue: #097fe8;
+  --color-sky-wash: #62aef0;
+  --color-midnight-ink: #02093a;
+
+  /* Notion Dark Surfaces */
+  --color-canvas-dark: #191919;
+  --color-card-dark: #202020;
+  --color-elevated-dark: #252525;
+  --color-border-dark: rgba(255, 255, 255, 0.08);
+
+  /* Typography */
+  --font-notioninter: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-lyon-text: 'Source Serif 4', 'Source Serif Pro', 'Lyon Text', Georgia, serif;
+
+  /* Border Radius */
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-36: 36px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+}
+
 @layer base {
   :root {
-    --bg-main: #f8fafc;
-    --bg-card: #ffffff;
-    --bg-subtle: #f1f5f9;
-    --bg-hover: #e2e8f0;
-    --border-color: #e2e8f0;
-    --border-subtle: #cbd5e1;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-muted: #64748b;
-    --accent: #7c3aed;
-    --accent-hover: #6d28d9;
-    --accent-subtle: #ede9fe;
-    --accent-text: #6d28d9;
-    --code-bg: #f8fafc;
+    /* Notion Dark as primary Default */
+    --bg-main: #191919;
+    --bg-card: #202020;
+    --bg-subtle: #252525;
+    --bg-hover: #2e2e2e;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-subtle: rgba(255, 255, 255, 0.12);
+    --text-primary: rgba(255, 255, 255, 0.92);
+    --text-secondary: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.40);
+    --accent: #0075de;
+    --accent-hover: #097fe8;
+    --accent-subtle: rgba(0, 117, 222, 0.15);
+    --accent-text: #62aef0;
+    --code-bg: #141414;
   }
 
-  .dark {
-    --bg-main: #0c0e14;
-    --bg-card: #141721;
-    --bg-subtle: #1a1e2b;
-    --bg-hover: #222738;
-    --border-color: #262c3e;
-    --border-subtle: #333b52;
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --text-muted: #8492a6;
-    --accent: #8b5cf6;
-    --accent-hover: #a78bfa;
-    --accent-subtle: rgba(139, 92, 246, 0.12);
-    --accent-text: #c4b5fd;
-    --code-bg: #090b10;
+  .light {
+    --bg-main: #f6f5f4;
+    --bg-card: #ffffff;
+    --bg-subtle: #eeedeb;
+    --bg-hover: #e6e5e3;
+    --border-color: rgba(0, 0, 0, 0.08);
+    --border-subtle: rgba(0, 0, 0, 0.12);
+    --text-primary: #000000;
+    --text-secondary: #615d59;
+    --text-muted: #757575;
+    --accent: #0075de;
+    --accent-hover: #0060b9;
+    --accent-subtle: #e6f3fe;
+    --accent-text: #0075de;
+    --code-bg: #f0efed;
   }
 
   * {
@@ -42,62 +94,73 @@
   body {
     background-color: var(--bg-main);
     color: var(--text-primary);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: var(--font-notioninter);
     min-height: 100vh;
     overflow-x: hidden;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.025em;
   }
 }
 
-/* Custom scrollbars */
+/* Custom scrollbars - Notion subtle style */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(140, 150, 170, 0.25);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(140, 150, 170, 0.4);
+  background: rgba(255, 255, 255, 0.25);
 }
 
-/* Tiptap / Prosemirror typography & styling */
+/* Tiptap / Prosemirror typography & styling in Notion Dark aesthetic */
 .ProseMirror {
   outline: none;
   min-height: 280px;
+  font-family: var(--font-notioninter);
+  color: var(--text-primary);
 }
 
 .ProseMirror p {
   margin-bottom: 0.75rem;
-  line-height: 1.65;
+  line-height: 1.5;
+  color: var(--text-secondary);
 }
 
 .ProseMirror h1 {
-  font-size: 1.875rem;
+  font-size: 2rem;
   font-weight: 700;
   line-height: 1.25;
-  margin-top: 1.5rem;
+  letter-spacing: -0.035em;
+  margin-top: 1.75rem;
   margin-bottom: 0.75rem;
   color: var(--text-primary);
 }
 
 .ProseMirror h2 {
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: 600;
   line-height: 1.3;
-  margin-top: 1.25rem;
+  letter-spacing: -0.025em;
+  margin-top: 1.5rem;
   margin-bottom: 0.5rem;
   color: var(--text-primary);
 }
 
 .ProseMirror h3 {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 600;
   line-height: 1.35;
-  margin-top: 1rem;
+  letter-spacing: -0.02em;
+  margin-top: 1.25rem;
   margin-bottom: 0.5rem;
   color: var(--text-primary);
 }
@@ -119,17 +182,18 @@
   padding-left: 1rem;
   margin: 1rem 0;
   color: var(--text-muted);
-  font-style: italic;
+  font-style: normal;
+  font-family: var(--font-lyon-text);
 }
 
 .ProseMirror pre {
   background: var(--code-bg);
   border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
+  border-radius: 8px;
   padding: 1rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.875rem;
-  color: #38bdf8;
+  color: #62aef0;
   overflow-x: auto;
   margin: 1rem 0;
 }
@@ -137,7 +201,7 @@
 .ProseMirror code {
   background: var(--bg-subtle);
   border: 1px solid var(--border-color);
-  border-radius: 0.25rem;
+  border-radius: 4px;
   padding: 0.15rem 0.35rem;
   font-size: 0.85em;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -150,7 +214,7 @@
   color: inherit;
 }
 
-/* Task lists */
+/* Task lists Notion style */
 ul[data-type="taskList"] {
   list-style: none;
   padding: 0;

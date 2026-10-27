@@ -7,28 +7,36 @@ export function cn(...inputs: (string | undefined | null | false)[]) {
 }
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'sky';
   size?: 'sm' | 'md' | 'lg' | 'icon';
   loading?: boolean;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', loading = false, disabled, children, ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-violet-500/50 disabled:opacity-50 disabled:pointer-events-none select-none cursor-pointer';
+    // Notion buttons: 8px border-radius, 200ms ease transition, no drop-shadows
+    const baseStyles = 'inline-flex items-center justify-center font-medium rounded-[8px] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#0075de]/40 disabled:opacity-40 disabled:pointer-events-none select-none cursor-pointer tracking-tight';
 
     const variants = {
-      primary: 'bg-violet-600 hover:bg-violet-700 text-white shadow-sm shadow-violet-900/30 active:scale-[0.98]',
-      secondary: 'bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-100 border border-slate-300 dark:border-slate-700/80',
-      outline: 'bg-transparent hover:bg-slate-100 text-slate-700 dark:hover:bg-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700',
-      ghost: 'bg-transparent hover:bg-slate-100 text-slate-600 dark:hover:bg-slate-800/70 dark:text-slate-300',
-      danger: 'bg-rose-600 hover:bg-rose-700 text-white shadow-sm shadow-rose-950/40 active:scale-[0.98]'
+      // Notion Blue: The single chromatic commitment in the system
+      primary: 'bg-[#0075de] hover:bg-[#0060b9] text-white active:scale-[0.99]',
+      // Secondary: hairline border on elevated surface
+      secondary: 'bg-[#252525] hover:bg-[#2e2e2e] text-[#ebebeb] border border-white/[0.08] active:scale-[0.99]',
+      // Outline: minimal hairline border
+      outline: 'bg-transparent hover:bg-[#252525] text-[#ebebeb] border border-white/[0.12]',
+      // Ghost: text with hover wash
+      ghost: 'bg-transparent hover:bg-[#252525] text-white/65 hover:text-white',
+      // Sky Tint Ghost CTA (Notion secondary action)
+      sky: 'bg-[#0075de]/15 hover:bg-[#0075de]/25 text-[#62aef0]',
+      // Notion Coral for danger actions
+      danger: 'bg-[#f64932] hover:bg-[#e32d14] text-white'
     };
 
     const sizes = {
       sm: 'text-xs px-2.5 py-1.5 gap-1.5',
-      md: 'text-sm px-3.5 py-2 gap-2',
+      md: 'text-sm px-3.5 py-1.5 gap-2',
       lg: 'text-base px-5 py-2.5 gap-2.5',
-      icon: 'h-9 w-9 p-0'
+      icon: 'h-8 w-8 p-0'
     };
 
     return (

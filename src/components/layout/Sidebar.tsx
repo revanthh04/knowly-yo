@@ -60,23 +60,23 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
   return (
     <aside
       className={cn(
-        'hidden md:flex flex-col border-r border-slate-200 dark:border-slate-800/80 bg-white dark:bg-[#141721] transition-all duration-200 select-none z-30 shrink-0 sticky top-0 h-screen',
-        collapsed ? 'w-18' : 'w-64'
+        'hidden md:flex flex-col border-r border-white/[0.08] bg-[#191919] transition-all duration-200 select-none z-30 shrink-0 sticky top-0 h-screen',
+        collapsed ? 'w-16' : 'w-60'
       )}
     >
       {/* Brand Header */}
-      <div className="h-16 flex items-center justify-between px-4 border-b border-slate-100 dark:border-slate-800/80">
-        <NavLink to="/dashboard" className="flex items-center gap-3 overflow-hidden">
-          <div className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center text-white font-bold shadow-md shadow-violet-900/30 shrink-0">
-            <GraduationCap className="w-5 h-5" />
+      <div className="h-14 flex items-center justify-between px-3.5 border-b border-white/[0.06]">
+        <NavLink to="/dashboard" className="flex items-center gap-2.5 overflow-hidden">
+          <div className="w-7 h-7 rounded-[7px] bg-[#0075de] flex items-center justify-center text-white font-bold shrink-0">
+            <GraduationCap className="w-4 h-4" />
           </div>
           {!collapsed && (
             <div className="flex flex-col min-w-0">
-              <span className="font-bold text-base tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
-                Knowly<span className="text-violet-500">-Yo</span>
+              <span className="font-semibold text-sm tracking-tight text-white/90 leading-tight">
+                Knowly<span className="text-[#62aef0]">-Yo</span>
               </span>
-              <span className="text-[11px] font-medium text-slate-400 truncate">
-                {isTeacher ? 'Teacher Knowledge Hub' : 'Student Portal'}
+              <span className="text-[10px] text-white/40 truncate">
+                {isTeacher ? 'Teacher Workspace' : 'Student Portal'}
               </span>
             </div>
           )}
@@ -84,18 +84,18 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
 
         <button
           onClick={onToggleCollapse}
-          className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          className="p-1 rounded-[6px] text-white/40 hover:text-white/80 hover:bg-[#252525] transition-colors"
           title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
-          {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+          {collapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
         </button>
       </div>
 
-      {/* Nav List */}
-      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+      {/* Nav List - Notion Minimal item list */}
+      <div className="flex-1 overflow-y-auto px-2 py-3 space-y-0.5">
         {!collapsed && (
-          <div className="px-3 pb-2 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
-            {isTeacher ? 'Teacher Workspace' : 'Student Learning'}
+          <div className="px-2.5 pb-1.5 text-[10px] font-medium text-white/35 uppercase tracking-wider">
+            {isTeacher ? 'Workspace' : 'Learning'}
           </div>
         )}
 
@@ -107,23 +107,32 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
               to={item.path}
               className={({ isActive }) =>
                 cn(
-                  'flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all group relative',
+                  'flex items-center gap-2.5 px-2.5 py-1.5 rounded-[6px] text-xs transition-colors duration-150 group relative',
                   isActive
-                    ? 'bg-violet-600 text-white shadow-sm shadow-violet-900/20 font-semibold'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/70 hover:text-slate-900 dark:hover:text-white'
+                    ? 'bg-[#252525] text-white font-medium border border-white/[0.07]'
+                    : 'text-white/60 hover:bg-[#202020] hover:text-white/90'
                 )
               }
               title={collapsed ? item.label : undefined}
             >
-              <Icon className="w-4 h-4 shrink-0 transition-transform group-hover:scale-105" />
-              {!collapsed && <span className="truncate flex-1">{item.label}</span>}
-              {!collapsed && item.badge !== undefined && (
-                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-rose-500 text-white shrink-0">
-                  {item.badge}
-                </span>
-              )}
-              {collapsed && item.badge !== undefined && (
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500" />
+              {({ isActive }) => (
+                <>
+                  <Icon
+                    className={cn(
+                      'w-4 h-4 shrink-0 transition-colors',
+                      isActive ? 'text-[#0075de]' : 'text-white/50 group-hover:text-white/80'
+                    )}
+                  />
+                  {!collapsed && <span className="truncate flex-1 tracking-tight">{item.label}</span>}
+                  {!collapsed && item.badge !== undefined && (
+                    <span className="text-[10px] font-medium px-1.5 py-0.2 rounded-full bg-[#f64932]/20 text-[#ff6b57] border border-[#f64932]/30 shrink-0">
+                      {item.badge}
+                    </span>
+                  )}
+                  {collapsed && item.badge !== undefined && (
+                    <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-[#f64932]" />
+                  )}
+                </>
               )}
             </NavLink>
           );
@@ -131,20 +140,20 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
       </div>
 
       {/* Footer Role Indicator */}
-      <div className="p-3 border-t border-slate-100 dark:border-slate-800/80">
+      <div className="p-2.5 border-t border-white/[0.06]">
         <div
           className={cn(
-            'flex items-center rounded-xl p-2 bg-slate-50 dark:bg-[#1a1e2b] border border-slate-200/80 dark:border-slate-800',
-            collapsed ? 'justify-center' : 'gap-3'
+            'flex items-center rounded-[8px] p-2 bg-[#202020] border border-white/[0.06]',
+            collapsed ? 'justify-center' : 'gap-2.5'
           )}
         >
-          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+          <div className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
           {!collapsed && (
             <div className="flex flex-col min-w-0">
-              <span className="text-xs font-semibold text-slate-900 dark:text-slate-200 truncate">
-                Role: {isTeacher ? 'Instructor' : 'Student'}
+              <span className="text-[11px] font-medium text-white/85 truncate">
+                {isTeacher ? 'Instructor Mode' : 'Student Mode'}
               </span>
-              <span className="text-[10px] text-slate-400">RLS Enforced</span>
+              <span className="text-[9px] text-white/35">Row Level Security</span>
             </div>
           )}
         </div>

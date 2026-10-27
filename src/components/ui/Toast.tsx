@@ -48,20 +48,20 @@ export function ToastContainer() {
       {toasts.map((t) => (
         <div
           key={t.id}
-          className="pointer-events-auto flex items-start gap-3 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#141721] shadow-xl text-slate-900 dark:text-slate-100 transition-all transform translate-y-0"
+          className="pointer-events-auto flex items-start gap-3 p-3.5 rounded-[10px] border border-white/[0.08] bg-[#202020] text-white shadow-2xl transition-all"
         >
-          {t.type === 'success' && <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />}
-          {t.type === 'error' && <AlertCircle className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />}
-          {t.type === 'info' && <Info className="w-5 h-5 text-violet-500 shrink-0 mt-0.5" />}
+          {t.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />}
+          {t.type === 'error' && <AlertCircle className="w-4 h-4 text-[#ff6b57] shrink-0 mt-0.5" />}
+          {t.type === 'info' && <Info className="w-4 h-4 text-[#62aef0] shrink-0 mt-0.5" />}
           <div className="flex-1 min-w-0">
-            <h4 className="text-xs font-semibold">{t.title}</h4>
-            {t.message && <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{t.message}</p>}
+            <h4 className="text-xs font-semibold text-white/90">{t.title}</h4>
+            {t.message && <p className="text-xs text-white/50 mt-0.5 leading-relaxed">{t.message}</p>}
           </div>
           <button
             onClick={() => setToasts((prev) => prev.filter((item) => item.id !== t.id))}
-            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            className="text-white/40 hover:text-white"
           >
-            <X className="w-4 h-4" />
+            <X className="w-3.5 h-3.5" />
           </button>
         </div>
       ))}

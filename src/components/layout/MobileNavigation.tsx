@@ -54,26 +54,26 @@ export function MobileNavigation({ isOpen, onClose }: MobileNavigationProps) {
   return (
     <div className="fixed inset-0 z-50 md:hidden flex">
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity" onClick={onClose} />
 
       {/* Drawer */}
-      <div className="relative w-72 max-w-[80vw] bg-white dark:bg-[#141721] h-full shadow-2xl z-10 flex flex-col p-4">
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+      <div className="relative w-64 max-w-[80vw] bg-[#191919] border-r border-white/[0.08] h-full shadow-2xl z-10 flex flex-col p-4">
+        <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center text-white">
+            <div className="w-7 h-7 rounded-[7px] bg-[#0075de] flex items-center justify-center text-white">
               <GraduationCap className="w-4 h-4" />
             </div>
-            <span className="font-bold text-base text-slate-900 dark:text-slate-100">Knowly-Yo</span>
+            <span className="font-semibold text-sm text-white/90">Knowly-Yo</span>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            className="p-1 rounded-[6px] text-white/40 hover:text-white"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto py-4 space-y-1">
+        <nav className="flex-1 overflow-y-auto py-3 space-y-0.5">
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
@@ -83,14 +83,14 @@ export function MobileNavigation({ isOpen, onClose }: MobileNavigationProps) {
                 onClick={onClose}
                 className={({ isActive }) =>
                   cn(
-                    'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all',
+                    'flex items-center gap-2.5 px-2.5 py-1.5 rounded-[6px] text-xs transition-colors',
                     isActive
-                      ? 'bg-violet-600 text-white shadow-sm shadow-violet-900/30'
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                      ? 'bg-[#252525] text-white font-medium border border-white/[0.07]'
+                      : 'text-white/60 hover:bg-[#202020] hover:text-white/90'
                   )
                 }
               >
-                <Icon className="w-4 h-4 shrink-0" />
+                <Icon className="w-4 h-4 shrink-0 text-[#0075de]" />
                 <span>{item.label}</span>
               </NavLink>
             );

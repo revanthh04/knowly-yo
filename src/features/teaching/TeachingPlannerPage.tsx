@@ -4,23 +4,17 @@ import {
   List,
   Plus,
   Clock,
-  CheckCircle2,
-  AlertCircle,
-  FileText,
-  CheckSquare,
-  Users,
-  ChevronRight,
-  BookOpen
+  CheckCircle2
 } from 'lucide-react';
 import { useAppStore } from '@/hooks/useAppStore';
-import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Modal } from '@/components/ui/Modal';
 import { Input, Textarea } from '@/components/ui/Input';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { toast } from '@/components/ui/Toast';
-import { Lesson, ClassLog } from '@/types';
+import { Lesson } from '@/types';
 
 export function TeachingPlannerPage() {
   const { store, currentUser, isTeacher } = useAppStore();
@@ -69,7 +63,7 @@ export function TeachingPlannerPage() {
 
     const batchObj = batches.find((b) => b.id === selectedBatchId);
     const startDate = new Date(startsAt);
-    const endDate = new Date(startDate.getTime() + 90 * 60000); // 90 min default
+    const endDate = new Date(startDate.getTime() + 90 * 60000);
 
     const plannedTopics = plannedTopicsText
       .split('\n')
@@ -131,38 +125,38 @@ export function TeachingPlannerPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-white/[0.06]">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white/95">
             Teaching & Lesson Planner
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-white/50 mt-1 leading-relaxed">
             Maintain classroom schedules, prep checklists, and post-class logs with student feedback.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           {/* View Toggle */}
-          <div className="flex items-center bg-slate-100 dark:bg-[#1a1e2b] p-1 rounded-xl border border-slate-200 dark:border-slate-800">
+          <div className="flex items-center bg-[#202020] p-0.5 rounded-[8px] border border-white/[0.08]">
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-lg text-xs font-medium cursor-pointer ${
+              className={`p-1.5 rounded-[6px] text-xs font-medium cursor-pointer ${
                 viewMode === 'list'
-                  ? 'bg-white dark:bg-violet-600 text-slate-900 dark:text-white shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-[#0075de] text-white'
+                  : 'text-white/50 hover:text-white'
               }`}
             >
-              <List className="w-4 h-4" />
+              <List className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => setViewMode('calendar')}
-              className={`p-1.5 rounded-lg text-xs font-medium cursor-pointer ${
+              className={`p-1.5 rounded-[6px] text-xs font-medium cursor-pointer ${
                 viewMode === 'calendar'
-                  ? 'bg-white dark:bg-violet-600 text-slate-900 dark:text-white shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-[#0075de] text-white'
+                  : 'text-white/50 hover:text-white'
               }`}
             >
-              <CalendarDays className="w-4 h-4" />
+              <CalendarDays className="w-3.5 h-3.5" />
             </button>
           </div>
 
@@ -171,9 +165,9 @@ export function TeachingPlannerPage() {
               variant="primary"
               size="sm"
               onClick={() => setScheduleModalOpen(true)}
-              className="gap-2"
+              className="gap-1.5"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-3.5 h-3.5" />
               <span>Schedule Lesson</span>
             </Button>
           )}
@@ -190,7 +184,7 @@ export function TeachingPlannerPage() {
           onAction={isTeacher ? () => setScheduleModalOpen(true) : undefined}
         />
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3.5">
           {lessons.map((lesson) => {
             const subject = subjects.find((s) => s.id === lesson.subject_id);
             const isCompleted = lesson.status === 'completed';
@@ -198,16 +192,16 @@ export function TeachingPlannerPage() {
             return (
               <Card
                 key={lesson.id}
-                className={`transition-all ${isCompleted ? 'border-emerald-500/30' : ''}`}
+                className={`transition-colors ${isCompleted ? 'border-emerald-500/30' : ''}`}
               >
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                   {/* Left: Lesson Info */}
                   <div className="space-y-3 flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-base font-bold text-slate-900 dark:text-slate-100">
+                      <span className="text-sm font-semibold text-white/95">
                         {lesson.title}
                       </span>
-                      <Badge variant="purple" className="text-[10px]">
+                      <Badge variant="blue" className="text-[10px]">
                         {lesson.batch_name || 'Batch'}
                       </Badge>
                       <Badge
@@ -218,8 +212,8 @@ export function TeachingPlannerPage() {
                       </Badge>
                     </div>
 
-                    <div className="flex items-center gap-3 text-xs text-slate-400 flex-wrap">
-                      <span className="flex items-center gap-1.5 text-violet-500 font-medium">
+                    <div className="flex items-center gap-3 text-xs text-white/40 flex-wrap">
+                      <span className="flex items-center gap-1.5 text-[#62aef0] font-medium">
                         <Clock className="w-3.5 h-3.5" />
                         {new Date(lesson.starts_at).toLocaleDateString()} at{' '}
                         {new Date(lesson.starts_at).toLocaleTimeString([], {
@@ -234,14 +228,14 @@ export function TeachingPlannerPage() {
                     {/* Planned Topics */}
                     {lesson.planned_topics.length > 0 && (
                       <div className="space-y-1">
-                        <span className="text-[11px] font-bold uppercase text-slate-400">
+                        <span className="text-[10px] font-semibold uppercase text-white/35">
                           Planned Topics:
                         </span>
                         <div className="flex items-center gap-1.5 flex-wrap">
                           {lesson.planned_topics.map((tp, idx) => (
                             <span
                               key={idx}
-                              className="px-2 py-0.5 rounded text-[11px] bg-slate-100 dark:bg-[#1a1e2b] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800"
+                              className="px-2 py-0.5 rounded-[5px] text-[11px] bg-[#252525] text-white/80 border border-white/[0.06]"
                             >
                               {tp}
                             </span>
@@ -252,24 +246,24 @@ export function TeachingPlannerPage() {
 
                     {/* Preparation Checklist */}
                     {lesson.preparation_checklist.length > 0 && (
-                      <div className="pt-2 border-t border-slate-100 dark:border-slate-800/60">
-                        <span className="text-[11px] font-bold uppercase text-slate-400 block mb-1.5">
+                      <div className="pt-2 border-t border-white/[0.06]">
+                        <span className="text-[10px] font-semibold uppercase text-white/35 block mb-1.5">
                           Teaching Prep Checklist:
                         </span>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                           {lesson.preparation_checklist.map((item) => (
                             <label
                               key={item.id}
-                              className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer select-none"
+                              className="flex items-center gap-2 text-xs text-white/70 cursor-pointer select-none"
                             >
                               <input
                                 type="checkbox"
                                 checked={item.checked}
                                 onChange={() => handleToggleChecklistItem(lesson.id, item.id)}
                                 disabled={!isTeacher}
-                                className="w-3.5 h-3.5 rounded text-violet-600 focus:ring-violet-500"
+                                className="w-3.5 h-3.5 rounded-[4px] text-[#0075de] focus:ring-[#0075de]"
                               />
-                              <span className={item.checked ? 'line-through text-slate-400' : ''}>
+                              <span className={item.checked ? 'line-through text-white/35' : ''}>
                                 {item.label}
                               </span>
                             </label>
@@ -280,16 +274,16 @@ export function TeachingPlannerPage() {
 
                     {/* Class Log Summary if completed */}
                     {lesson.class_log && (
-                      <div className="mt-3 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs space-y-1">
-                        <div className="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                      <div className="mt-3 p-3 rounded-[8px] bg-emerald-500/[0.08] border border-emerald-500/[0.2] text-xs space-y-1">
+                        <div className="font-semibold text-emerald-400 flex items-center gap-1.5">
                           <CheckCircle2 className="w-4 h-4" />
                           <span>Class Log Recorded</span>
                         </div>
-                        <p className="text-slate-600 dark:text-slate-300">
+                        <p className="text-white/70">
                           <strong>Homework:</strong> {lesson.class_log.homework_assigned}
                         </p>
                         {lesson.class_log.next_lesson_plan && (
-                          <p className="text-slate-600 dark:text-slate-300">
+                          <p className="text-white/70">
                             <strong>Next Class:</strong> {lesson.class_log.next_lesson_plan}
                           </p>
                         )}
@@ -301,7 +295,7 @@ export function TeachingPlannerPage() {
                   {isTeacher && (
                     <div className="flex flex-col gap-2 shrink-0 self-start">
                       <Button
-                        variant={isCompleted ? 'outline' : 'primary'}
+                        variant={isCompleted ? 'secondary' : 'primary'}
                         size="sm"
                         onClick={() => handleOpenClassLogModal(lesson)}
                         className="text-xs"
@@ -335,13 +329,13 @@ export function TeachingPlannerPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label className="block text-xs font-medium text-white/70">
                 Batch
               </label>
               <select
                 value={selectedBatchId}
                 onChange={(e) => setSelectedBatchId(e.target.value)}
-                className="w-full px-3.5 py-2 text-sm rounded-lg bg-white dark:bg-[#1a1e2b] border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100"
+                className="w-full px-3 py-1.5 text-sm rounded-[8px] bg-[#191919] border border-white/[0.1] text-white focus:outline-none focus:border-[#0075de]"
               >
                 {batches.map((b) => (
                   <option key={b.id} value={b.id}>
@@ -352,13 +346,13 @@ export function TeachingPlannerPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label className="block text-xs font-medium text-white/70">
                 Subject
               </label>
               <select
                 value={selectedSubjectId}
                 onChange={(e) => setSelectedSubjectId(e.target.value)}
-                className="w-full px-3.5 py-2 text-sm rounded-lg bg-white dark:bg-[#1a1e2b] border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-slate-100"
+                className="w-full px-3 py-1.5 text-sm rounded-[8px] bg-[#191919] border border-white/[0.1] text-white focus:outline-none focus:border-[#0075de]"
               >
                 {subjects.map((s) => (
                   <option key={s.id} value={s.id}>
